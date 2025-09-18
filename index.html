@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taller GitHub: Frases Motivacionales</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="app">
+      <header class="app__header">
+        <h1>Motivación en Equipo</h1>
+        <p class="app__subtitle">
+          Presiona el botón para recibir inspiración instantánea.
+        </p>
+      </header>
+
+      <section class="card">
+        <p class="card__counter" data-counter>Frases mostradas: 0</p>
+        <p class="card__phrase" data-phrase-display>
+          Tu frase aparecerá aquí. ¡Haz clic en el botón para empezar!
+        </p>
+        <button class="card__button" type="button" data-show-button>
+          Mostrar frase
+        </button>
+      </section>
+
+      <section class="add">
+        <h2>Agrega tu propia frase</h2>
+        <form class="add__form" data-add-form>
+          <label class="add__label" for="customPhrase">
+            Comparte una frase motivacional o un chiste:
+          </label>
+          <div class="add__controls">
+            <input
+              id="customPhrase"
+              class="add__input"
+              type="text"
+              name="phrase"
+              placeholder="Tu mejor frase..."
+              autocomplete="off"
+              data-add-input
+            />
+            <button class="add__submit" type="submit">Agregar</button>
+          </div>
+        </form>
+        <p class="add__feedback" data-feedback aria-live="polite"></p>
+      </section>
+    </main>
+  </body>
+</html>

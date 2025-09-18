@@ -1,0 +1,191 @@
+:root {
+  --bg: #f2f5ff;
+  --card-bg: #ffffff;
+  --primary: #2d4bff;
+  --primary-dark: #1f34b5;
+  --primary-border: rgba(45, 75, 255, 0.2);
+  --primary-focus: rgba(45, 75, 255, 0.15);
+  --primary-shadow: rgba(33, 56, 255, 0.1);
+  --text: #1f2933;
+  --muted: #52606d;
+  --success: #0f9d58;
+  --error: #d93025;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(160deg, #e7ecff 0%, var(--bg) 100%);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  transition: background 0.6s ease;
+}
+
+.app {
+  width: min(640px, 100%);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 24px 40px var(--primary-shadow);
+}
+
+.app__header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.app__header h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.app__subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 16px 30px var(--primary-shadow);
+  display: grid;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.card__counter {
+  margin: 0;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.card__phrase {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.card__button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.card__button:hover,
+.card__button:focus-visible {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.card__button:active {
+  transform: scale(0.97);
+}
+
+.add {
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: inset 0 0 0 1px var(--primary-border);
+}
+
+.add h2 {
+  margin: 0 0 12px;
+  font-size: 1.3rem;
+}
+
+.add__form {
+  display: grid;
+  gap: 12px;
+}
+
+.add__label {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.add__controls {
+  display: flex;
+  gap: 12px;
+}
+
+.add__input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid var(--primary-border);
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add__input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-focus);
+}
+
+.add__submit {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.add__submit:hover,
+.add__submit:focus-visible {
+  background: var(--primary-dark);
+}
+
+.add__feedback {
+  min-height: 1.4em;
+  margin: 4px 0 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.add__feedback[data-state='success'] {
+  color: var(--success);
+}
+
+.add__feedback[data-state='error'] {
+  color: var(--error);
+}
+
+@media (max-width: 560px) {
+  body {
+    padding: 16px;
+  }
+
+  .app {
+    padding: 24px;
+  }
+
+  .add__controls {
+    flex-direction: column;
+  }
+
+  .add__submit {
+    width: 100%;
+  }
+}
