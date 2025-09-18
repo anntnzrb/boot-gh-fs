@@ -87,37 +87,46 @@ const addInput = document.querySelector('[data-add-input]');
 /** @type {HTMLParagraphElement | null} */
 const feedback = document.querySelector('[data-feedback]');
 
+const pickRandomIndex = (length) => Math.floor(Math.random() * length);
+
+const pickRandomItem = (items) => items[pickRandomIndex(items.length)];
+
+const normalize = (value) => value.trim();
+
+const toLocaleLower = (value) => value.toLocaleLowerCase('es-419');
+
+const distinctFromLast = (items, lastValue) =>
+  items.length <= 1 ? items : items.filter((item) => item !== lastValue);
+
+const collectIndexesExcept = (total, excludedIndex) =>
+  total <= 1
+    ? [0]
+    : Array.from({ length: total }, (_, index) => index).filter(
+        (index) => index !== excludedIndex
+      );
+
 /**
  * Obtiene una frase aleatoria evitando repetir la última mostrada.
  * @returns {string} Frase lista para mostrarse en pantalla.
  */
-function getRandomPhrase() {
+const getRandomPhrase = () => {
   if (phrases.length === 0) {
     return 'Aún no hay frases. ¡Agrega la tuya aquí abajo!';
   }
 
-  if (phrases.length === 1) {
-    return phrases[0];
-  }
-
-  let candidate = lastPhrase;
-  while (candidate === lastPhrase) {
-    const index = Math.floor(Math.random() * phrases.length);
-    candidate = phrases[index];
-  }
-
-  return candidate;
-}
+  const candidates = distinctFromLast(phrases, lastPhrase);
+  return pickRandomItem(candidates);
+};
 
 /**
  * Actualiza la etiqueta que cuenta cuántas frases se mostraron.
  * Evita romper si el elemento no existe.
  * @returns {void}
  */
-function updateCounter() {
+const updateCounter = () => {
   if (!counterLabel) return;
   counterLabel.textContent = `Frases mostradas: ${shownCount}`;
-}
+};
 
 /**
  * Muestra un mensaje de retroalimentación para el formulario.
@@ -125,17 +134,17 @@ function updateCounter() {
  * @param {'info'|'success'|'error'} [type='info'] - Tipo de mensaje.
  * @returns {void}
  */
-function setFeedback(message, type = 'info') {
+const setFeedback = (message, type = 'info') => {
   if (!feedback) return;
   feedback.textContent = message;
   feedback.dataset.state = type;
-}
+};
 
 /**
  * Muestra una frase aleatoria y sincroniza métricas y estilos.
  * @returns {void}
  */
-function showRandomPhrase() {
+const showRandomPhrase = () => {
   if (!phraseDisplay) return;
   const phrase = getRandomPhrase();
   phraseDisplay.textContent = phrase;
@@ -144,7 +153,7 @@ function showRandomPhrase() {
   updateCounter();
   applyRandomColorScheme();
   setFeedback('');
-}
+};
 
 /**
  * Maneja el envío del formulario para agregar una nueva frase.
@@ -152,10 +161,10 @@ function showRandomPhrase() {
  * @param {SubmitEvent} event - Evento de submit del formulario.
  * @returns {void}
  */
-function handleAddPhrase(event) {
+const handleAddPhrase = (event) => {
   event.preventDefault();
   if (!addInput) return;
-  const newPhrase = addInput.value.trim();
+  const newPhrase = normalize(addInput.value);
 
   if (newPhrase.length === 0) {
     setFeedback('Por favor, escribe una frase antes de agregarla.', 'error');
@@ -163,7 +172,7 @@ function handleAddPhrase(event) {
   }
 
   const alreadyExists = phrases.some(
-    (phrase) => phrase.toLowerCase() === newPhrase.toLowerCase()
+    (phrase) => toLocaleLower(phrase) === toLocaleLower(newPhrase)
   );
 
   if (alreadyExists) {
@@ -174,7 +183,7 @@ function handleAddPhrase(event) {
   phrases.push(newPhrase);
   addInput.value = '';
   setFeedback('¡Frase agregada con éxito!', 'success');
-}
+};
 
 if (showButton) {
   showButton.addEventListener('click', showRandomPhrase);
@@ -190,22 +199,15 @@ updateCounter();
  * Cambia aleatoriamente el esquema de colores aplicado a la aplicación.
  * @returns {void}
  */
-function applyRandomColorScheme() {
+const applyRandomColorScheme = () => {
   const total = colorSchemes.length;
   if (total === 0) return;
 
-  let nextIndex = lastSchemeIndex;
-
-  if (total === 1) {
-    nextIndex = 0;
-  } else {
-    while (nextIndex === lastSchemeIndex) {
-      nextIndex = Math.floor(Math.random() * total);
-    }
-  }
+  const indexes = collectIndexesExcept(total, lastSchemeIndex);
+  const nextIndex = pickRandomItem(indexes);
+  const scheme = colorSchemes[nextIndex];
 
   lastSchemeIndex = nextIndex;
-  const scheme = colorSchemes[nextIndex];
 
   document.body.style.background = scheme.gradient;
   document.documentElement.style.setProperty('--primary', scheme.primary);
@@ -213,4 +215,4 @@ function applyRandomColorScheme() {
   document.documentElement.style.setProperty('--primary-border', scheme.border);
   document.documentElement.style.setProperty('--primary-focus', scheme.focus);
   document.documentElement.style.setProperty('--primary-shadow', scheme.shadow);
-}
+};
