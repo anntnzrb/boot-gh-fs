@@ -1,3 +1,7 @@
+/**
+ * Frases utilizadas como base de la aplicación.
+ * @type {string[]}
+ */
 const defaultPhrases = [
   '¡Ánimo! Cada línea te acerca a la meta.',
   'Ese bug se arregla con una buena mateada.',
@@ -6,7 +10,20 @@ const defaultPhrases = [
   'Hoy el deploy sale sin drama, vas a ver.'
 ];
 
+/** @type {string[]} */
 const phrases = [...defaultPhrases];
+
+/**
+ * @typedef {Object} ColorScheme
+ * @property {string} gradient - Gradiente aplicado al fondo del body.
+ * @property {string} primary - Color primario para botones y énfasis.
+ * @property {string} primaryDark - Variante oscura para estados hover.
+ * @property {string} border - Color de borde utilizado en inputs y contenedores.
+ * @property {string} focus - Sombra aplicada al enfocar campos.
+ * @property {string} shadow - Sombra de tarjetas y contenedores.
+ */
+
+/** @type {ColorScheme[]} */
 const colorSchemes = [
   {
     gradient: 'linear-gradient(160deg, #e7ecff 0%, #f2f5ff 100%)',
@@ -50,17 +67,30 @@ const colorSchemes = [
   }
 ];
 
+/** @type {number} */
 let shownCount = 0;
+/** @type {string | null} */
 let lastPhrase = null;
+/** @type {number} */
 let lastSchemeIndex = -1;
 
+/** @type {HTMLParagraphElement | null} */
 const phraseDisplay = document.querySelector('[data-phrase-display]');
+/** @type {HTMLButtonElement | null} */
 const showButton = document.querySelector('[data-show-button]');
+/** @type {HTMLParagraphElement | null} */
 const counterLabel = document.querySelector('[data-counter]');
+/** @type {HTMLFormElement | null} */
 const addForm = document.querySelector('[data-add-form]');
+/** @type {HTMLInputElement | null} */
 const addInput = document.querySelector('[data-add-input]');
+/** @type {HTMLParagraphElement | null} */
 const feedback = document.querySelector('[data-feedback]');
 
+/**
+ * Obtiene una frase aleatoria evitando repetir la última mostrada.
+ * @returns {string} Frase lista para mostrarse en pantalla.
+ */
 function getRandomPhrase() {
   if (phrases.length === 0) {
     return 'Aún no hay frases. ¡Agrega la tuya aquí abajo!';
@@ -79,17 +109,32 @@ function getRandomPhrase() {
   return candidate;
 }
 
+/**
+ * Actualiza la etiqueta que cuenta cuántas frases se mostraron.
+ * Evita romper si el elemento no existe.
+ * @returns {void}
+ */
 function updateCounter() {
   if (!counterLabel) return;
   counterLabel.textContent = `Frases mostradas: ${shownCount}`;
 }
 
+/**
+ * Muestra un mensaje de retroalimentación para el formulario.
+ * @param {string} message - Texto a mostrar al usuario.
+ * @param {'info'|'success'|'error'} [type='info'] - Tipo de mensaje.
+ * @returns {void}
+ */
 function setFeedback(message, type = 'info') {
   if (!feedback) return;
   feedback.textContent = message;
   feedback.dataset.state = type;
 }
 
+/**
+ * Muestra una frase aleatoria y sincroniza métricas y estilos.
+ * @returns {void}
+ */
 function showRandomPhrase() {
   if (!phraseDisplay) return;
   const phrase = getRandomPhrase();
@@ -101,6 +146,12 @@ function showRandomPhrase() {
   setFeedback('');
 }
 
+/**
+ * Maneja el envío del formulario para agregar una nueva frase.
+ * Evita duplicados y resetea el campo cuando se agrega correctamente.
+ * @param {SubmitEvent} event - Evento de submit del formulario.
+ * @returns {void}
+ */
 function handleAddPhrase(event) {
   event.preventDefault();
   if (!addInput) return;
@@ -135,6 +186,10 @@ if (addForm) {
 
 updateCounter();
 
+/**
+ * Cambia aleatoriamente el esquema de colores aplicado a la aplicación.
+ * @returns {void}
+ */
 function applyRandomColorScheme() {
   const total = colorSchemes.length;
   if (total === 0) return;
